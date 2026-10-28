@@ -3,23 +3,29 @@ using System.Text.Json;
 
 namespace ToDoList;
 
-public class MakeList
+public class ToDoManager //class för hantering av todos
 {
     public string taskList = "tasks.json";
     public List<ToDo> tasks = new List<ToDo>();     //Ny lista för ToDo:s
 
     //Konstruktor
-    public MakeList()
+    public ToDoManager()
     {
-        //Om filen finns
-        if( File.Exists(taskList))
+        //Om JSON-filen finns
+        if (File.Exists(taskList))
         {
-            //lagra innehållet i variabeln
+            //Läs in innehåll som sträng
             string jsonString = File.ReadAllText(taskList);
 
-            //deserialisera jsonString till lista med ToDo-objekt --> läggs i tasks
+            //Deserialisera JSON-strängen till en lista med ToDo-objekt
             tasks = JsonSerializer.Deserialize<List<ToDo>>(jsonString)!;
 
         }
+    }
+
+    public void SaveToJson()        //Metod för att spara listan som JSON
+    {
+        var jsonString = JsonSerializer.Serialize(tasks);       //Serialisera listan till JSON-sträng
+        File.WriteAllText(taskList, jsonString);                //Skriv JSON-strängen till filen
     }
 }
