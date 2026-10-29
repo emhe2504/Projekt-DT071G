@@ -7,7 +7,7 @@
 * 
 * Beskrivning:
 * En konsolappplikation i form av en Att-göra lista där användaren
-kan lägga till, ändra, bocka av och ta bort uppgifter.
+kan lägga till, bocka av och ta bort uppgifter.
 */
 
 
@@ -93,7 +93,7 @@ while (true)
 
     if (choice != "1" && choice != "2" && choice != "3" && choice != "4")
     {
-        Console.WriteLine("Ange nummer som finns i menyn.");
+        Console.WriteLine("Ange nummer som finns i menyn.");        //felmeddelande
         Console.WriteLine("Tryck Enter för att fortsätta.");
         Console.ReadLine();
         continue;
@@ -107,7 +107,7 @@ while (true)
             Console.Clear();
 
             Console.WriteLine();
-            Console.WriteLine("Uppgift måste anges för att spara!");
+            Console.WriteLine("Dags att ange en ny uppgift!");
 
             //Först false
             Console.WriteLine("Uppgiften markeras automatiskt som (Ej färdig)");
@@ -117,6 +117,15 @@ while (true)
             Console.Write("Vad har du för uppgift?: ");
             string? addedTask = Console.ReadLine();
 
+            //Till "startsidan" om tomt fält
+            if (string.IsNullOrWhiteSpace(addedTask))
+            {
+                Console.WriteLine("Du angav inte någon uppgift.");       //felmeddelande
+                Console.WriteLine("Tryck Enter för att återgå till meny.");
+                Console.ReadLine();
+                continue;
+            }
+
             //Prioritet
             Console.Write("Vilken prioritet (1-3)?: ");
             string? input = Console.ReadLine();
@@ -124,13 +133,10 @@ while (true)
             if (!int.TryParse(input, out int addedPriority) ||
                 addedPriority < 1 || addedPriority > 3)
             {
+                Console.WriteLine("Ogiltig prioritet. Prioritet 1 används.");
+                Console.WriteLine("Tryck Enter för att fortsätta.");
+                Console.ReadLine();
                 addedPriority = 1;
-            }
-
-            //Till "startsidan" om tomt fält
-            if (string.IsNullOrWhiteSpace(addedTask))
-            {
-                continue;
             }
 
             newToDo.AddToDo(addedTask, addedPriority, false);      //Uppgift läggs till
@@ -151,7 +157,7 @@ while (true)
                 if (indexToChange < 0 || indexToChange >= newToDo.tasks.Count)
                 {
                     Console.WriteLine("Det finns ingen uppgift med det numret.");       //felmeddelande
-                    Console.WriteLine("Tryck Enter för att fortsätta.");
+                    Console.WriteLine("Tryck Enter för att återgå till meny.");
                     Console.ReadLine();
                     continue;
                 }
@@ -166,11 +172,19 @@ while (true)
                 {
                     currentTodo.Done = true;
                     newToDo.SaveToJson();           //spara ändringar
+
+                    Console.WriteLine("Statusen har uppdaterats!");
+                    Console.WriteLine("Tryck Enter för att fortsätta.");
+                    Console.ReadLine();
                 }
                 else if (addedStatus == "nej")
                 {
                     currentTodo.Done = false;
                     newToDo.SaveToJson();           //spara ändringar
+
+                    Console.WriteLine("Statusen har uppdaterats!");
+                    Console.WriteLine("Tryck Enter för att fortsätta.");
+                    Console.ReadLine();
                 }
                 else
                 {
@@ -193,7 +207,39 @@ while (true)
         //
         //Radera todo
         case "3":
+
+            //Rensa konsollen, men visa uppgifter som finns att radera
             Console.Clear();
+
+            int ind = 1;
+            foreach (ToDo todo in newToDo.GetToDos())
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine();
+                Console.WriteLine(" [" + ind++ + "] " + todo.Task + " ");
+                Console.WriteLine();
+                Console.ResetColor();
+            }
+
+            Console.Write("Ange vilken uppgift du vill radera: ");
+            string? indexAnswer = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(indexAnswer))   //Tillbaka till start om inget anges
+            {
+                continue;
+            }
+
+            //Prova att ta bort inlägg
+            try
+            {
+                int fixedIndex = Convert.ToInt32(indexAnswer) - 1;      //-1 för rätt index
+                newToDo.DeleteToDo(Convert.ToInt32(fixedIndex));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fel uppstod, prova igen senare. Tryck enter.");  //Om något blir fel
+                Console.ReadKey();
+            }
             break;
 
 
