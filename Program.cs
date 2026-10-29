@@ -39,6 +39,8 @@ while (true)
 
     Console.WriteLine(list);
     Console.WriteLine();
+    Console.WriteLine(" -~-~-~-~-~-~-~-~-~-~-~-~-~-~-~- ");
+    Console.WriteLine();
     Console.WriteLine(" Dags att utföra uppgifter!");
     Console.WriteLine();
     Console.WriteLine(" Vad du har att göra: ");

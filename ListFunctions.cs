@@ -3,11 +3,15 @@ using System.Text.Json;
 
 namespace ToDoList;
 
-public class ToDoManager //class för hantering av todos
+//
+//class för hantering av todos
+public class ToDoManager
 {
     public string taskList = "tasks.json";
     public List<ToDo> tasks = new List<ToDo>();     //Ny lista för ToDo:s
 
+
+    //
     //Konstruktor
     public ToDoManager()
     {
@@ -23,7 +27,23 @@ public class ToDoManager //class för hantering av todos
         }
     }
 
-    public void SaveToJson()        //Metod för att spara listan som JSON
+
+    //
+    ////Metod för att lägga till Todo
+    public void AddToDo(string task, int priority, bool done)
+    {
+        ToDo newTodo = new ToDo();
+        newTodo.Task = task;
+        newTodo.Priority = priority;
+        newTodo.Done = done;
+        tasks.Add(newTodo);
+        SaveToJson();
+    }
+
+
+    //
+    ////Metod för att spara listan som JSON
+    public void SaveToJson()
     {
         var jsonString = JsonSerializer.Serialize(tasks);       //Serialisera listan till JSON-sträng
         File.WriteAllText(taskList, jsonString);                //Skriv JSON-strängen till filen
