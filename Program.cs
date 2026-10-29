@@ -16,7 +16,7 @@ using ToDoList;
 //Nytt ToDo-objekt
 ToDoManager newToDo = new ToDoManager();
 
-//Lista gör startsidan
+//Lista för startsidan
 string list = @"
         _______________
        |   Att göra:   |
@@ -83,7 +83,8 @@ while (true)
     Console.WriteLine("1. Lägga till uppgift");
     Console.WriteLine("2. Uppdatera status");
     Console.WriteLine("3. Ta bort uppgift");
-    Console.WriteLine("4. Avsluta.");
+    Console.WriteLine("4. Se din list-statistik");
+    Console.WriteLine("5. Avsluta.");
     Console.WriteLine();
 
     //Vad vill användaren göra?
@@ -91,7 +92,7 @@ while (true)
     Console.ResetColor();
     string? choice = Console.ReadLine();
 
-    if (choice != "1" && choice != "2" && choice != "3" && choice != "4")
+    if (choice != "1" && choice != "2" && choice != "3" && choice != "4" && choice != "5")
     {
         Console.WriteLine("Ange nummer som finns i menyn.");        //felmeddelande
         Console.WriteLine("Tryck Enter för att fortsätta.");
@@ -106,12 +107,14 @@ while (true)
         case "1":
             Console.Clear();
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine();
             Console.WriteLine("Dags att ange en ny uppgift!");
 
             //Först false
             Console.WriteLine("Uppgiften markeras automatiskt som (Ej färdig)");
             Console.WriteLine();
+            Console.ResetColor();
 
             //Uppgift
             Console.Write("Vad har du för uppgift?: ");
@@ -244,8 +247,79 @@ while (true)
 
 
         //
-        //Avsluta programmet direkt
+        //Se list-statistik
         case "4":
+
+            Console.Clear();
+
+            string Trophy = @"
+               ============== 
+             / ============== \
+            | /              \ |
+            \|                |/
+             \      100%      /
+              \              /
+               \            /
+                \          /
+                  ========
+                    |  |   
+                    |  |
+                    |  |
+                  ========
+                ===========";
+
+            ToDoStatistics statistics = new ToDoStatistics();
+            var allResults = statistics.TodoPercent();
+
+            int precComp = (int)allResults.precentComplete;
+            int precInComp = (int)allResults.percentInComplete;
+
+            if (allResults.TotalTodoCount == 0)
+            {
+                Console.WriteLine("Det finns inga uppgifter i listan att ange statistik för.");
+                Console.WriteLine("Tryck Enter för gå tillbaka till menyn och lägga till nya uppgifter.");
+                Console.ReadLine();
+                continue;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine();
+            Console.WriteLine("> Du har totalt: " + allResults.TotalTodoCount + " uppifter på din lista.");
+            Console.WriteLine("> Du har markerat " + allResults.complete + " som Färdig.");
+            Console.WriteLine("> Du har " + allResults.inComplete + " uppgifter markerade som Ej färdig");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Det betyder att " + precComp + "% av uppgifterna är klara.");
+            Console.WriteLine("Samt att du har " + precInComp + "% av uppgifterna kvar att göra.");
+            Console.ResetColor();
+            Console.WriteLine();
+            Console.WriteLine();
+
+            if (allResults.precentComplete == 100)
+            {
+                Console.WriteLine("Grattis! Du har klarat av 100% av dina uppgfifter. Bra jobbat.");
+                Console.WriteLine("Din pokal:");
+                Console.WriteLine();
+                Console.WriteLine(Trophy);
+            }
+            else if (allResults.precentComplete >= 75)
+            {
+                Console.WriteLine("Du närmar dig målet på 100% avklarade uppgifter, snart där!");
+            }
+            else if (allResults.precentComplete < 75)
+            {
+                Console.WriteLine("Du har en bit kvar till 100%, du klarar det här!");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Tryck Enter för att återgå till menyn.");
+            Console.ReadLine();
+
+            break;
+
+        //
+        //Avsluta programmet direkt
+        case "5":
             Environment.Exit(0);
             break;
     }
