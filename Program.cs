@@ -10,8 +10,12 @@
 kan lägga till, bocka av och ta bort uppgifter.
 */
 
-
 using ToDoList;
+
+//För att visa å, ä, ö
+using System.Text;
+Console.OutputEncoding = Encoding.UTF8;
+Console.InputEncoding = Encoding.Unicode;
 
 //Nytt ToDo-objekt
 ToDoManager newToDo = new ToDoManager();
@@ -283,7 +287,7 @@ while (true)
                 Console.ReadLine();
                 continue;
             }
-            
+
             //Skriva ut all statistik
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine();
