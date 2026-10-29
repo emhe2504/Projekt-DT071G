@@ -21,23 +21,25 @@ public class ToDoStatistics
 
             if (status == true)
             {
-                complete++;
+                complete++;     //Addera antalet avkalrade
             }
             else if (status == false)
             {
-                inComplete++;
+                inComplete++;   //Addera antalet icke avklarade
             }
         }
 
 
         var list = newToDo.GetToDos();
-        int TotalTodoCount = list.Count();
+        int TotalTodoCount = list.Count();      //Totalt antal todos
 
+        //Om inga todos finns
         if (TotalTodoCount == 0)
         {
             return (0, 0, 0, 0.0, 0.0);
         }
 
+        //Precentberäkningar
         double precentComplete = (double)complete / TotalTodoCount * 100;
         double percentInComplete = (double)inComplete / TotalTodoCount * 100;
 

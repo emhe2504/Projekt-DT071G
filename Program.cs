@@ -269,11 +269,13 @@ while (true)
                 ===========";
 
             ToDoStatistics statistics = new ToDoStatistics();
-            var allResults = statistics.TodoPercent();
+            var allResults = statistics.TodoPercent();          //För att nå vad den returnerar
 
+            //Omvandla till int
             int precComp = (int)allResults.precentComplete;
             int precInComp = (int)allResults.percentInComplete;
 
+            //Om det inte finns några uppgifter
             if (allResults.TotalTodoCount == 0)
             {
                 Console.WriteLine("Det finns inga uppgifter i listan att ange statistik för.");
@@ -281,7 +283,8 @@ while (true)
                 Console.ReadLine();
                 continue;
             }
-
+            
+            //Skriva ut all statistik
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine();
             Console.WriteLine("> Du har totalt: " + allResults.TotalTodoCount + " uppifter på din lista.");
@@ -295,6 +298,7 @@ while (true)
             Console.WriteLine();
             Console.WriteLine();
 
+            //Ge feedback beroende på procent avklarade uppgifter
             if (allResults.precentComplete == 100)
             {
                 Console.WriteLine("Grattis! Du har klarat av 100% av dina uppgfifter. Bra jobbat.");
