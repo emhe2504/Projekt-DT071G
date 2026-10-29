@@ -80,8 +80,8 @@ while (true)
     //Meny
     Console.ForegroundColor = ConsoleColor.Yellow;
     Console.WriteLine();
-    Console.WriteLine("1. Lägga till uppgift.");
-    Console.WriteLine("2. Markera uppgift som färdig");
+    Console.WriteLine("1. Lägga till uppgift");
+    Console.WriteLine("2. Uppdatera status");
     Console.WriteLine("3. Ta bort uppgift");
     Console.WriteLine("4. Avsluta.");
     Console.WriteLine();
@@ -93,17 +93,21 @@ while (true)
 
     if (choice != "1" && choice != "2" && choice != "3" && choice != "4")
     {
+        Console.WriteLine("Ange nummer som finns i menyn.");
+        Console.WriteLine("Tryck Enter för att fortsätta.");
+        Console.ReadLine();
         continue;
     }
 
     switch (choice)
     {
+        //
         //Addera todo
         case "1":
             Console.Clear();
 
             Console.WriteLine();
-            Console.WriteLine("Uppgift måste anges!");
+            Console.WriteLine("Uppgift måste anges för att spara!");
 
             //Först false
             Console.WriteLine("Uppgiften markeras automatiskt som (Ej färdig)");
@@ -132,16 +136,71 @@ while (true)
             newToDo.AddToDo(addedTask, addedPriority, false);      //Uppgift läggs till
             break;
 
+
+
+        //
+        //Uppdatera status
         case "2":
-            Console.Clear();
+
+            Console.Write("Ange nummer på uppgift: ");
+            string? numberInput = Console.ReadLine();
+            if (int.TryParse(numberInput, out int addedNumber))     //Kontroll om parse lyckas
+            {
+                int indexToChange = addedNumber - 1;                //-1 för korrekt index
+
+                if (indexToChange < 0 || indexToChange >= newToDo.tasks.Count)
+                {
+                    Console.WriteLine("Det finns ingen uppgift med det numret.");       //felmeddelande
+                    Console.WriteLine("Tryck Enter för att fortsätta.");
+                    Console.ReadLine();
+                    continue;
+                }
+
+                //Beroende på ja eller nej, ändra done till true/false vid index
+                Console.Write("Är uppgiften utförd? (ja/nej) ");
+                string? addedStatus = Console.ReadLine()?.ToLower();
+
+                var currentTodo = newToDo.tasks[indexToChange];
+
+                if (addedStatus == "ja")
+                {
+                    currentTodo.Done = true;
+                    newToDo.SaveToJson();           //spara ändringar
+                }
+                else if (addedStatus == "nej")
+                {
+                    currentTodo.Done = false;
+                    newToDo.SaveToJson();           //spara ändringar
+                }
+                else
+                {
+                    Console.WriteLine("Svara med ja eller nej.");           //felmeddelande
+                    Console.WriteLine("Tryck Enter för att fortsätta.");
+                    Console.ReadLine();
+                }
+                continue;
+            }
+            else
+            {
+                Console.WriteLine("Ange ett giltigt uppgiftsnummer.");     //felmeddelande
+                Console.WriteLine("Tryck Enter för att fortsätta.");
+                Console.ReadLine();
+            }
+
             break;
 
+
+        //
+        //Radera todo
         case "3":
             Console.Clear();
             break;
 
+
+        //
+        //Avsluta programmet direkt
         case "4":
-            Environment.Exit(0);        //Avsluta programmet direkt
+            Environment.Exit(0);
             break;
     }
 }

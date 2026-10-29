@@ -60,7 +60,7 @@ public class ToDoManager
 
     //
     //Metod för att spara listan som JSON
-    private void SaveToJson()
+    public void SaveToJson()
     {
         var jsonString = JsonSerializer.Serialize(tasks);       //Serialisera listan till JSON-sträng
         File.WriteAllText(taskList, jsonString);                //Skriv JSON-strängen till filen
