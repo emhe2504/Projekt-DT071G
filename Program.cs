@@ -161,7 +161,7 @@ while (true)
             {
                 int indexToChange = addedNumber - 1;                //-1 för korrekt index
 
-                if (indexToChange < 0 || indexToChange >= newToDo.tasks.Count)
+                if (indexToChange < 0 || indexToChange >= newToDo.GetToDos().Count)
                 {
                     Console.WriteLine("Det finns ingen uppgift med det numret.");       //felmeddelande
                     Console.WriteLine("Tryck Enter för att återgå till meny.");
@@ -171,14 +171,12 @@ while (true)
 
                 //Beroende på ja eller nej, ändra done till true/false vid index
                 Console.Write("Är uppgiften utförd? (ja/nej) ");
-                string? addedStatus = Console.ReadLine()?.ToLower();
 
-                var currentTodo = newToDo.tasks[indexToChange];
+                string? addedStatus = Console.ReadLine()?.ToLower();
 
                 if (addedStatus == "ja")
                 {
-                    currentTodo.Done = true;
-                    newToDo.SaveToJson();           //spara ändringar
+                    newToDo.UpdateToDo(indexToChange, true);        //Uppdatera todo
 
                     Console.WriteLine("Statusen har uppdaterats!");
                     Console.WriteLine("Tryck Enter för att fortsätta.");
@@ -186,8 +184,7 @@ while (true)
                 }
                 else if (addedStatus == "nej")
                 {
-                    currentTodo.Done = false;
-                    newToDo.SaveToJson();           //spara ändringar
+                    newToDo.UpdateToDo(indexToChange, false);        //Uppdatera todo
 
                     Console.WriteLine("Statusen har uppdaterats!");
                     Console.WriteLine("Tryck Enter för att fortsätta.");

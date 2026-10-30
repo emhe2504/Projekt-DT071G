@@ -1,30 +1,19 @@
 
-using System.Text.Json;
-
 namespace ToDoList;
 
 //
 //class för hantering av todos
 public class ToDoManager
 {
-    public string taskList = "tasks.json";
-    public List<ToDo> tasks = new List<ToDo>();     //Ny lista för ToDo:s
+    private JsonManager jsonManager = new JsonManager();
+    private List<ToDo> tasks;
 
 
     //
     //Konstruktor
     public ToDoManager()
     {
-        //Om JSON-filen finns
-        if (File.Exists(taskList))
-        {
-            //Läs in innehåll som sträng
-            string jsonString = File.ReadAllText(taskList);
-
-            //Deserialisera JSON-strängen till en lista med ToDo-objekt
-            tasks = JsonSerializer.Deserialize<List<ToDo>>(jsonString)!;
-
-        }
+        tasks = jsonManager.LoadFromJson();
     }
 
 
@@ -37,16 +26,24 @@ public class ToDoManager
         newTodo.Priority = priority;        //värdet i priority
         newTodo.Done = done;                //värdet i done
         tasks.Add(newTodo);                 //lägg till i tasks
-        SaveToJson();
+        jsonManager.SaveToJson(tasks);
     }
 
+
+     //
+    //Metod för att ändra Todo
+    public void UpdateToDo(int index,  bool done)
+    {
+        tasks[index].Done = done;
+        jsonManager.SaveToJson(tasks);
+    }
 
     //
     //Metod för att ta bort Todo
     public void DeleteToDo(int index)
     {
         tasks.RemoveAt(index);          //ta bort utifrån index
-        SaveToJson();
+        jsonManager.SaveToJson(tasks);
     }
 
 
@@ -55,14 +52,5 @@ public class ToDoManager
     public List<ToDo> GetToDos()
     {
         return tasks;
-    }
-
-
-    //
-    //Metod för att spara listan som JSON
-    public void SaveToJson()
-    {
-        var jsonString = JsonSerializer.Serialize(tasks);       //Serialisera listan till JSON-sträng
-        File.WriteAllText(taskList, jsonString);                //Skriv JSON-strängen till filen
     }
 }
