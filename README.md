@@ -11,3 +11,9 @@ Applikationen har en huvudmeny där varje nummer i menyn leder till olika funkti
 
 
 Jag hoppas att alla delar ska fungera!
+
+
+Applikationen presentras även på följande länk:
+
+https://youtu.be/Po-sYpaS6uA
+
