@@ -8,5 +8,5 @@ public class ToDo
 
     public int? Priority { get; set; }  //int - prioritet
 
-    public bool Done { get; set; }      //bool - klar/inte klar
+    public bool Done { get; set; }      //bool - avklarad/ej avklarad (true/false)
 }
