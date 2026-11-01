@@ -12,7 +12,7 @@ kan lägga till, bocka av och ta bort uppgifter.
 
 using ToDoList;
 
-//För att visa å, ä, ö
+//För att använda å, ä, ö
 using System.Text;
 Console.OutputEncoding = Encoding.UTF8;
 Console.InputEncoding = Encoding.Unicode;
@@ -63,10 +63,12 @@ while (true)
         {
             status = "Ej färdig";
 
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(" [" + index++ + "] " + todo.Task + " ");
             Console.WriteLine(" Prioritet: " + todo.Priority);
             Console.WriteLine(" Status: " + status);
             Console.WriteLine();
+            Console.ResetColor();
         }
         else
         {
